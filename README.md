@@ -7,19 +7,28 @@ En statisk GitHub Pages-side. Én produktmappe bliver til én række, og billede
 ```text
 billeder/
   profilbillede.png
-  01 Striber/
+  01 Stribede sweatre/
     01 Original.HEIC
-  02 Mønsterstrik/
+  02 Fryd sweater/
     01 Original.HEIC
     02 Variant 1.HEIC
     03 Variant 2.HEIC
     04 Variant 3.jpeg
-  03 Høj hals/
+  03 Sweater med høj hals/
     01 Original.HEIC
-    05 Variant 4.HEIC
+  04 Hæklede trøjer/
+    01 Flerfarvet cardigan.jpg
+    02 Grøn trøje.jpg
+  05 Slipover/
+    01 Lys slipover.jpg
+  06 Mønsterstrik/
+    01 Blå med rosa mønster.jpg
+    …
 ```
 
-Mappenavn bliver produktnavn; filnavn bliver billedtekst. Tal i starten styrer rækkefølgen og skjules på siden. Brug fx `04 Cardigan/01 Grøn.HEIC` til et nyt produkt. Hold ét produkt pr. mappe og læg billeder direkte i produktmappen. Tomme mapper og andre filtyper ignoreres.
+Overblikket under profilen dannes automatisk af produktmapper med billeder og linker til hver række.
+
+Grupperne sorteres efter antal billeder, flest først. Ved samme antal bruges mappenavnenes rækkefølge. Mappenavn bliver produktnavn; filnavn bruges som tilgængelig billedbeskrivelse. Der vises ingen tekst under billederne. Tal i starten styrer billedernes indbyrdes rækkefølge og skjules på siden. Brug fx `04 Cardigan/01 Grøn.HEIC` til et nyt produkt. Hold ét produkt pr. mappe og læg billeder direkte i produktmappen. Tomme mapper og andre filtyper ignoreres.
 
 JPEG, PNG, WebP og HEIC/HEIF understøttes. Bygningen konverterer til JPEG, retter orientering, begrænser størrelsen til 1600 px og fjerner metadata fra de publicerede billeder. Originalerne i `billeder/` bevares; i et offentligt GitHub-repo er originalerne også offentlige.
 

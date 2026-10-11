@@ -34,26 +34,29 @@ def build(source=ROOT / 'billeder', output=ROOT / 'dist'):
     used = {'profil.jpg'}
     convert(source / 'profilbillede.png', assets / 'profil.jpg')
     rows = []
+    links = []
+    products = []
     for folder in sorted(source.iterdir()):
         if not folder.is_dir() or folder.name.startswith('.'):
             continue
         photos = sorted(p for p in folder.iterdir() if p.is_file() and not p.name.startswith('.') and p.suffix.lower() in FORMATS)
         if not photos:
             continue
+        products.append((folder, photos))
+    for folder, photos in sorted(products, key=lambda product: -len(product[1])):
         title = escape(label(folder))
+        links.append(f'<a href="#produkt-{len(rows)}">{title}</a>')
         cards = []
         for number, photo in enumerate(photos, 1):
             filename = f'{len(rows)+1}-{number}.jpg'
             used.add(filename)
             width, height = convert(photo, assets / filename)
             caption = escape(label(photo))
-            # shortcut: Garn er kun et udkast på første billede; erstat med rigtige oplysninger senere.
-            yarn = '<ul class="yarn"><li>Garn 1</li><li>Garn 2</li><li>Garn 3</li></ul>' if not rows and number == 1 else ''
-            cards.append(f'<figure><a class="photo" href="billeder/{filename}" aria-label="Se {title}: {caption} i stort format"><img src="billeder/{filename}" width="{width}" height="{height}" alt="{title} — {caption}" loading="lazy"></a><figcaption>{caption}{yarn}</figcaption></figure>')
+            cards.append(f'<figure><a class="photo" href="billeder/{filename}" aria-label="Se {title}: {caption} i stort format"><img src="billeder/{filename}" width="{width}" height="{height}" alt="{title} — {caption}" loading="lazy"></a></figure>')
         count = f'{len(photos)} variant' + ('er' if len(photos) != 1 else '')
         rows.append(f'<section class="product" aria-labelledby="produkt-{len(rows)}"><div class="product-heading"><div><span class="number">{len(rows)+1:02d}</span><h2 id="produkt-{len(rows)}">{title}</h2></div><span class="count">{count}</span></div><div class="photos" tabindex="0" role="region" aria-label="{title} — rul sidelæns for flere billeder">{"".join(cards)}</div></section>')
     template = (ROOT / 'index.html').read_text()
-    (output / 'index.html').write_text(template.replace('<!-- GALLERY -->', '\n'.join(rows) or '<p>Der er snart strik at se her.</p>'))
+    (output / 'index.html').write_text(template.replace('<!-- OVERVIEW -->', '<nav class="overview" aria-label="Produkter">' + ''.join(links) + '</nav>' if links else '').replace('<!-- GALLERY -->', '\n'.join(rows) or '<p>Der er snart strik at se her.</p>'))
     for name in ('style.css', 'gallery.js'):
         shutil.copyfile(ROOT / name, output / name)
     for old in assets.glob('*.jpg'):
